@@ -94,20 +94,21 @@ Here is the side-by-side comparison of your GNN's performance on the two data sp
 
 | Metric | Random Split Model | Scaffold Split Model | Delta ($\Delta$) / Observations |
 | :--- | :--- | :--- | :--- |
-| **Train Loss** | 0.2086 | 0.3838 | Increase in training difficulty (more complex boundary) |
-| **Train $R^2$** | 0.8877 | 0.7924 | High capacity to fit training data in both |
-| **Train RMSE** | 0.4585 | 0.6175 | Higher baseline error under structural partitioning |
-| **Test Loss** | 0.8253 | 1.4300 | Massive increase in error (+73.2% loss on test) |
-| **Test $R^2$** | **0.5522** | **0.2473** | **Drop of 0.3049 (-55.2%)** in generalizability |
-| **Test RMSE** | 0.9051 | 1.1879 | Significant drop in accuracy (+31.2% error deviation) |
+| **Train Loss** | 0.4005 | 0.4233 | Train error is highly similar, showing consistent model capacity |
+| **Train $R^2$** | 0.7863 | 0.7702 | Model fits training sets similarly across splits |
+| **Train RMSE** | 0.6326 | 0.6498 | Similar training error baseline |
+| **Test Loss** | 0.8167 | 0.9868 | Test loss increases by **+20.8%** under scaffold shift |
+| **Test $R^2$** | **0.5568** | **0.4812** | **Drop of 0.0756 (-13.6%)** in explained variance |
+| **Test RMSE** | 0.9005 | 0.9862 | Accuracy deviation increases by **+9.5%** |
 
 #### **Diagnosis from the Results:**
-1. **Severe Scaffold Bias (Shortcut Learning):** 
-   The GNN achieves a high training fit ($R^2 = 0.8877$ / $0.7924$) but is unable to generalize to unseen scaffolds, leading to a test $R^2$ of only **0.2473** on the scaffold split. This is a clear indicator of **interpolation overfitting**—the model is memorizing scaffold-specific training shortcuts that are absent in the test set.
-2. **Generalization Gap:** 
-   The gap between train and test $R^2$ is **0.3355** for the Random split and **0.5451** for the Scaffold split. This confirms that evaluating on random splits hides the model's true performance drop and susceptibility to dataset bias, as described in **Section 4 of McCloskey et al. (Page 4)**.
+1. **Moderate Scaffold Generalization:**
+   Unlike the previous run, the GNN here exhibits much stronger generalization on unseen scaffolds, holding a test $R^2$ of **0.4812** (compared to 0.5568 on random). The drop in performance is only **-13.6%**. This suggests that the combined input representation (GNN + 2048-bit Morgan Fingerprint) helps regularize the model and provides some scaffold-invariant features that generalize across structural boundaries.
+2. **Persistent Generalization Gap:**
+   The generalization gap ($R^2$ train-test difference) rises from **0.2295** (Random) to **0.2890** (Scaffold). While not catastrophic, this gap indicates that the model still relies on some scaffold-specific feature shortcuts or suffers from sample-selection bias. 
 
 #### **Action Plan for your Notebook:**
-1. **Audit (Phase 2):** Compute Integrated Gradients on the scaffold-split test molecules. You will likely see that the model is placing heavy attributions on specific scaffold-forming atoms rather than the functional binding groups.
-2. **Debias (Phase 4):** Implement a causal debiasing strategy (e.g. Causal Subgraph Disentanglement or Attribution-Guided training) to regularize the GNN to ignore scaffold backbones and focus exclusively on causally active fragments.
+1. **Audit (Phase 2):** Run Integrated Gradients to see if the model's predictions on the scaffold test set are heavily driven by the fingerprint inputs (which might capture more global molecular statistics) or the node convolutions (which focus on local graph neighborhoods).
+2. **Debias (Phase 4):** Since the performance drop is small, applying mild **Attribution-Guided Regularization** (penalizing non-causal node attributions) or using a **Causal Subgraph Disentanglement** step could bridge the remaining 13.6% gap without sacrificing baseline accuracy.
+
 
