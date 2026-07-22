@@ -156,7 +156,6 @@ Attributions were extracted using Integrated Gradients via PyTorch Captum (`Inte
 
 ### Multi-Column XAI Visualization Subplots (`random_1.png`)
 * **Left Subplot (GNN Atom Map)**: Atom-level Integrated Gradients attributions ($\text{attr}_x$) projected onto 2D molecular structures (Blue = Positive attribution, Red = Negative attribution).
-* **Middle Subplot (FP Structure Map)**: Morgan Fingerprint attributions ($\text{attr}_{\text{fp}}$) mapped back onto 2D atomic coordinates via bit environment matching (`bitInfo`), with **net negative FP attributions highlighted in Red**.
 * **Right Subplot (FP Bar Chart)**: Ranks top 15 fingerprint bits by attribution magnitude (Blue = Positive attribution, Red = Negative attribution).
 
 ---
