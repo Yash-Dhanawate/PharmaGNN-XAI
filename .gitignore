@@ -47,19 +47,19 @@ ENV/
 *.swp
 *.swo
 
-# Data and Outputs (large / generated files)
+# Data, Images, and Outputs
 data/raw/
 data/processed/
+images/
 plots/*.png
 plots/*.svg
 plots/*.pdf
-images/*.png
-images/*.jpg
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# Local IG Attribution Documentation (Ignored by Git)
-IG_Attribution_Wrapper_*.md
-
+# Markdown files to ignore (Keep README.md tracked)
+GNN_XAI_Debiasing_Workflow.md
+JAK2_Pharmacophore_XAI.md
+!README.md
