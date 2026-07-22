@@ -47,13 +47,10 @@ ENV/
 *.swp
 *.swo
 
-# Data, Images, and Outputs
+# Data and Images
 data/raw/
 data/processed/
 images/
-plots/*.png
-plots/*.svg
-plots/*.pdf
 
 # OS generated files
 .DS_Store
